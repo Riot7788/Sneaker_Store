@@ -2,13 +2,6 @@ from django.http import HttpResponse
 from django.shortcuts import render
 
 
-def template_view(request):
-    return render(
-        request=request,
-        template_name="base.html",
-    )
-
-
 def home_view(request):
     return render(
         request=request,

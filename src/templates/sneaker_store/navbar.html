@@ -4,6 +4,7 @@
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
+
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item dropdown ">
@@ -33,7 +34,7 @@
                         <li><a class="dropdown-item  text-white" href="#">Корзина</a></li>
                         <li><a class="dropdown-item  text-white" href="#">Личный кабинет</a>
                         <li><a class="dropdown-item  text-white" href="#">Регистрация пользователя</a></li>
-                        <li><a class="dropdown-item  text-white" href="#">Админ панель</a></li>
+                        <li><a class="dropdown-item  text-white" href="{% url 'admin:index' %}">Админ панель</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
@@ -46,5 +47,19 @@
                 <button class="btn btn-outline-success text-white" type="submit">Поиск</button>
             </form>
         </div>
+    </div>
+</nav>
+<nav class="navbar navbar-expand-lg bg-dark" data-bs-theme="dark">
+    <div class="dropdown">
+      <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+        Каталог
+      </a>
+
+      <ul class="dropdown-menu">
+        <li><a class="dropdown-item" href="{% url 'index' %}">Все товары</a></li>
+        <li><a class="dropdown-item" href="{% url 'product' %}">Товар 1</a></li>
+        <li><a class="dropdown-item" href="#">Товар 2</a></li>
+        <li><a class="dropdown-item" href="#">Товар 3</a></li>
+      </ul>
     </div>
 </nav>
