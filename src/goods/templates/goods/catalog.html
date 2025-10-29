@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Каталог{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+
+    <h2 class="text-center mb-4">Категории</h2>
+    <div class="d-flex flex-wrap justify-content-center gap-2 mb-5">
+        {% for category in categories %}
+        <a class="btn btn-outline-dark" href="#" role="button">{{ category.name }}</a>
+        {% endfor %}
+    </div>
+
+    <h2 class="text-center mb-4">Товары</h2>
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        {% for product in products %}
+        <div class="col">
+            <div class="card h-100 shadow-sm">
+                {% if product.image %}
+                <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
+                {% else %}
+                <img src="{% static 'img/no_image.png' %}" class="card-img-top" alt="Нет изображения">
+                {% endif %}
+                <div class="card-body text-center">
+                    <h5 class="card-title">{{ product.name }}</h5>
+                    <p class="card-text text-muted">{{ product.category.name }}</p>
+                    <p class="fw-bold">
+                        {% if product.discount > 0 %}
+                            <span class="text-decoration-line-through text-muted me-2">{{ product.price }} ₽</span>
+                            <span class="text-danger">{{ product.price|floatformat:2|add:"-"|add:product.discount }} ₽</span>
+                        {% else %}
+                            {{ product.price }} ₽
+                        {% endif %}
+                    </p>
+                    <a href="{% url 'product_detail' product.slug %}" class="btn btn-dark">Подробнее</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+</div>
+{% endblock %}
