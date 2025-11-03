@@ -26,7 +26,11 @@ class ProductSizeInline(admin.TabularInline):
 @admin.register(Products)
 class ProductsAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('name',)}
-    list_display = ('name', 'category', 'price', 'discount')
-    list_filter = ('category',)
+    list_display = ('name', 'category', 'price', 'discount', 'final_price')
+    list_filter = ('category', 'gender')
     search_fields = ('name', 'description')
     inlines = [ProductSizeInline]
+
+    @admin.display(description='Цена со скидкой')
+    def final_price(self, obj):
+        return obj.sell_price()
