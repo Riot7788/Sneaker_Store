@@ -4,12 +4,52 @@
 {% block title %}Каталог{% endblock %}
 
 {% block content %}
+
+<div class="row">
+    <div class="dropdown mb-2">
+        <button class="btn btn-secondary dropdown-toggle btn-dark" type="button" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            Фильтры
+        </button>
+        <form action="" method="get" class="dropdown-menu bg-dark" data-bs-theme="dark">
+            <div class="form-check text-white mx-3">
+                <input class="form-check-input" type="checkbox" name="on_sale" id="flexCheckDefault" value="on">
+                <input type="hidden" name="q" value="request.GET.q">
+                <label class="form-check-label" for="flexCheckDefault">
+                    Товары по акции
+                </label>
+            </div>
+            <p class="text-white mx-3 mt-3">Сортировать:</p>
+            <div class="form-check text-white mx-3">
+                <input class="form-check-input" type="radio" name="order_by" id="flexRadioDefault1" value="default" checked>
+                <label class="form-check-label" for="flexRadioDefault1">
+                    По умолчанию
+                </label>
+            </div>
+            <div class="form-check text-white mx-3">
+                <input class="form-check-input" type="radio" name="order_by" id="flexRadioDefault2" value="price">
+                <label class="form-check-label" for="flexRadioDefault2">
+                    От дешевых к дорогим
+                </label>
+            </div>
+            <div class="form-check text-white mx-3">
+                <input class="form-check-input" type="radio" name="order_by" id="flexRadioDefault3" value="-price">
+                <label class="form-check-label" for="flexRadioDefault3">
+                    От дорогих к дешевым
+                </label>
+            </div>
+
+            <button type="submit" class="btn btn-primary mx-3 mt-3">Применить</button>
+        </form>
+    </div>
+</div>
+
 <div class="container mt-4">
 
   <h2 class="text-center mb-4">Категории</h2>
   <div class="d-flex flex-wrap justify-content-center gap-2 mb-5">
     {% for category in categories %}
-      <a class="btn btn-outline-dark" href="#" role="button">{{ category.name }}</a>
+      <a class="btn btn-outline-dark" href="{% url 'index' category.slug %}" role="button">{{ category.name }}</a>
     {% empty %}
       <p class="text-muted text-center">Категорий пока нет</p>
     {% endfor %}
@@ -17,7 +57,7 @@
 
   <h2 class="text-center mb-4">Товары</h2>
   <div class="row row-cols-1 row-cols-md-3 g-4">
-    {% for product in products %}
+    {% for product in goods %}
       <div class="col">
         <div class="card h-100 shadow-sm position-relative">
 
@@ -34,17 +74,18 @@
 
           <div class="card-body text-center">
             <h5 class="card-title">{{ product.name }}</h5>
+            <p class="product_id">id: {{ product.display_id }}</p>
             <p class="text-muted mb-1">{{ product.category.name }}</p>
             <p class="text-muted small mb-2">{{ product.get_gender_display }}</p>
 
             <!-- 🔹 Цена и скидка -->
             {% if product.discount > 0 %}
               <p class="fw-bold mb-2">
-                <span class="text-decoration-line-through text-muted me-2">{{ product.price }} ₽</span>
-                <span class="text-danger">{{ product.sell_price }} ₽</span>
+                <span class="text-decoration-line-through text-muted me-2">{{ product.price }} $</span>
+                <span class="text-danger">{{ product.sell_price }} $</span>
               </p>
             {% else %}
-              <p class="fw-bold mb-2">{{ product.price }} ₽</p>
+              <p class="fw-bold mb-2">{{ product.price }} $</p>
             {% endif %}
 
             <a href="{% url 'product_detail' product.slug %}" class="btn btn-dark w-100">Подробнее</a>
@@ -55,6 +96,38 @@
       <p class="text-center text-muted">Товары пока не добавлены</p>
     {% endfor %}
   </div>
-
 </div>
+
+<nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center my-4">
+        <div class="custom-shadow d-flex">
+            <!--Кнопка Назад-->
+            <li class="page-item {% if not goods.has_previous %} disabled {% endif %}">
+                <a class="page-link" href="{% if goods.has_previous %}
+                {% url 'index' slug_url goods.previous_page_number %}
+                {% else %}
+                #
+                {% endif %}">Назад</a>
+            </li>
+
+            <!--Переключение по страницам-->
+            {% for page in goods.paginator.page_range %}
+            {% if page >= goods.number|add:-2 and page <= goods.number|add:2   %}
+                <li class="page-item {% if goods.number == page %} active {% endif %}">
+                    <a class="page-link" href="{% url 'index' slug_url page %}">{{ page }}</a>
+                </li>
+            {% endif %}
+            {% endfor %}
+
+            <!--Кнопка Следующая -->
+            <li class="page-item {% if not goods.has_next %} disabled {% endif %}">
+                <a class="page-link" href="{% if goods.has_next %}
+                {% url 'index' slug_url goods.next_page_number %}
+                {% else %}
+                #
+                {% endif %}">Следующая</a>
+        </div>
+    </ul>
+</nav>
+
 {% endblock %}
