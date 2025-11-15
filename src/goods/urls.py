@@ -9,6 +9,7 @@ from .views import (
 
 
 urlpatterns = [
+    path('search/', catalog, name='search'),
     path('', catalog, {'category_slug': 'all'}, name='catalog_all'),
     path('<slug:category_slug>/', catalog, name='index'),
     path('product/<slug:slug>/', product_detail, name='product_detail'),
