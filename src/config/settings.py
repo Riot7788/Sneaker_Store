@@ -46,6 +46,7 @@ INSTALLED_APPS = [
 
     'sneaker_store',
     'goods',
+    'users',
 ]
 
 MIDDLEWARE = [
