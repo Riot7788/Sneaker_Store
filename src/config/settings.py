@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 import os
 from pathlib import Path
 
-from django.conf.global_settings import SECRET_KEY
+from django.conf.global_settings import SECRET_KEY, AUTH_USER_MODEL
 from dotenv import load_dotenv
 
 load_dotenv("../.env")
@@ -147,6 +147,8 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AUTH_USER_MODEL = 'users.User'
 
 INTERNAL_IPS = [
     "127.0.0.1",
